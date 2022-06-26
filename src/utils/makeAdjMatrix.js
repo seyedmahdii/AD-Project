@@ -41,4 +41,8 @@ export function makeIDMap(vertexes, n) {
     return map;
 }
 
+export function getVertexFromId(places, id) {
+    return places.find((place) => place.id === id);
+}
+
 export default makeAdjMatrix;

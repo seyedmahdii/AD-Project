@@ -1,10 +1,13 @@
 import { useState } from "react";
 import Section from "../Section/Section";
 import AddVertex from "./AddVertex/AddVertex";
-import styles from "./Touring.module.css";
 import Table from "../Table/Table";
-import { runTSP } from "../../utils/TSP";
-import makeAdjMatrix, { makeIDMap } from "../../utils/makeAdjMatrix";
+import makeAdjMatrix, {
+    getVertexFromId,
+    makeIDMap,
+} from "../../utils/makeAdjMatrix";
+import primMST from "../../utils/prim-MST";
+import objectFlip from "../../utils/objectFlip";
 
 const createData = (row) => {
     return { ...row, name: row?.name };
@@ -12,20 +15,18 @@ const createData = (row) => {
 
 const vertexSchema = { name: "", id: "" };
 
-function Touring({ places, distances }) {
+function MST({ places, distances }) {
     const [vertexes, setVertexes] = useState([]);
-    const [src, setSrc] = useState(vertexSchema);
-    const [answer, setAnswer] = useState(-1);
+    const [results, setResults] = useState([]);
+    const [vMap, setVMap] = useState({});
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        let allVertexes = [src, ...vertexes];
-
         let mainAdjMatrix = makeAdjMatrix(distances, places.length);
         console.log(makeAdjMatrix(distances, places.length));
 
-        let n = allVertexes.length;
+        let n = vertexes.length;
         // Initialzing graph[][] with zeros
         let graph = new Array(n).fill(0);
         for (let i = 0; i < n; i++) {
@@ -35,7 +36,7 @@ function Touring({ places, distances }) {
         let map = {},
             vNo = 0;
         for (let i = 0; i < n; i++) {
-            let item = allVertexes[i];
+            let item = vertexes[i];
             if (!Boolean(map[item.id])) {
                 map[item.id] = vNo;
                 vNo++;
@@ -54,18 +55,17 @@ function Touring({ places, distances }) {
             }
         }
 
-        setAnswer(() => runTSP(graph, n));
+        setResults(() => primMST(graph, n));
+        setVMap(() => objectFlip(map));
     };
 
     return (
-        <Section title="Touring">
+        <Section title="MST">
             <AddVertex
                 places={places}
                 distances={distances}
                 vertexes={vertexes}
                 setVertexes={setVertexes}
-                src={src}
-                setSrc={setSrc}
                 vertexSchema={vertexSchema}
             />
 
@@ -80,10 +80,38 @@ function Touring({ places, distances }) {
             </div>
 
             <div className="mt-10">
-                {answer !== -1 ? (
-                    <span className="text-lg">
-                        Tour Length: <b className="text-green-600">{answer}</b>
-                    </span>
+                {results.length !== 0 ? (
+                    <div>
+                        <span className="text-lg">
+                            <b className="text-green-600">Paths:</b>
+                        </span>
+                        <ul className="list-disc">
+                            {results.map((item, i) => {
+                                return (
+                                    <li key={i}>
+                                        <b>
+                                            {
+                                                getVertexFromId(
+                                                    places,
+                                                    Number(vMap[item.from])
+                                                ).name
+                                            }
+                                        </b>{" "}
+                                        to{" "}
+                                        <b>
+                                            {
+                                                getVertexFromId(
+                                                    places,
+                                                    Number(vMap[item.to])
+                                                ).name
+                                            }
+                                        </b>{" "}
+                                        &nbsp; ({item.distance})
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 ) : (
                     <span className="text-lg text-red-600">
                         <b>select some node!!</b>
@@ -102,10 +130,10 @@ function Touring({ places, distances }) {
                 >
                     <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
                 </svg>
-                <span>show tour</span>
+                <span>show MST</span>
             </button>
         </Section>
     );
 }
 
-export default Touring;
+export default MST;

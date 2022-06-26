@@ -1,8 +1,7 @@
 .section-center {
     width: 90vw;
-    margin: 0 auto;
+    margin: 2rem auto;
     max-width: 35rem;
-    margin-top: 4rem;
     background: var(--clr-white);
     border-radius: var(--radius);
     box-shadow: var(--light-shadow);
