@@ -1,0 +1,25 @@
+.section-center {
+    width: 90vw;
+    margin: 0 auto;
+    max-width: 35rem;
+    margin-top: 4rem;
+    background: var(--clr-white);
+    border-radius: var(--radius);
+    box-shadow: var(--light-shadow);
+    transition: var(--transition);
+    padding: 2rem;
+}
+.section-center:hover {
+    box-shadow: var(--dark-shadow);
+}
+.section-title {
+    color: var(--clr-primary-1);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+@media screen and (min-width: 992px) {
+    .section-center {
+        width: 95vw;
+    }
+}
