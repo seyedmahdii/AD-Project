@@ -80,13 +80,9 @@ function Touring({ places, distances }) {
             </div>
 
             <div className="mt-10">
-                {answer !== -1 ? (
+                {answer !== -1 && (
                     <span className="text-lg">
                         Tour Length: <b className="text-green-600">{answer}</b>
-                    </span>
-                ) : (
-                    <span className="text-lg text-red-600">
-                        <b>select some node!!</b>
                     </span>
                 )}
             </div>

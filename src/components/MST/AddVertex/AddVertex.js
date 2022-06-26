@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ComboboxInput from "../../ComboboxInput/ComboboxInput";
 
 function AddVertex({ places, distances, vertexes, setVertexes, vertexSchema }) {
@@ -14,10 +14,6 @@ function AddVertex({ places, distances, vertexes, setVertexes, vertexSchema }) {
         }
     };
 
-    useEffect(() => {
-        localStorage.setItem("distances", JSON.stringify(distances));
-    }, [distances]);
-
     return (
         <div>
             <div className="flex items-center">
@@ -30,7 +26,7 @@ function AddVertex({ places, distances, vertexes, setVertexes, vertexSchema }) {
                             list={places}
                         />
                         <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center mt-5"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
                             onClick={addVertexHandler}
                         >
                             add

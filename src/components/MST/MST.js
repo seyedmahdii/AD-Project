@@ -80,7 +80,7 @@ function MST({ places, distances }) {
             </div>
 
             <div className="mt-10">
-                {results.length !== 0 ? (
+                {results.length !== 0 && (
                     <div>
                         <span className="text-lg">
                             <b className="text-green-600">Paths:</b>
@@ -112,10 +112,6 @@ function MST({ places, distances }) {
                             })}
                         </ul>
                     </div>
-                ) : (
-                    <span className="text-lg text-red-600">
-                        <b>select some node!!</b>
-                    </span>
                 )}
             </div>
 
